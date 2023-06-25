@@ -71,6 +71,31 @@ public:
 		return nRandom;
 	}
 
+	static char* GenerateChar(const bool bLower, const bool bUpper, const bool bNumbers, const bool bSpecials)
+	{
+		constexpr char LOWER_CHARS[] = "abcdefghijklmnopqrstuvwxyz";
+		constexpr char UPPER_CHARS[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		constexpr char NUMBER_CHARS[] = "0123456789";
+		constexpr char SPECIALS_CHARS[] = "!@#$%&*";
+
+		std::vector<char> Allowed = {};
+		if (bLower) Allowed.push_back(*LOWER_CHARS);
+		if (bUpper) Allowed.push_back(*UPPER_CHARS);
+		if (bNumbers) Allowed.push_back(*NUMBER_CHARS);
+		if (bSpecials) Allowed.push_back(*SPECIALS_CHARS);
+
+		return &Allowed.data()[GenerateNumber(0, Allowed.size())];
+	}
+
+	static std::string GenerateString(const bool bLower, const bool bUpper, const bool bNumbers, const bool bSpecials, const int nLength)
+	{
+		std::string szResult;
+		for (int i = 0; i < nLength; i++)
+			szResult.append(GenerateChar(bLower, bUpper, bNumbers, bSpecials));
+		
+		return szResult;
+	}
+
 	static std::vector<int> GenerateNumbersArray(const bool bShuffle,
 		/* nMin = -x; nMax = x */
 		const int nMin = ((__TIME__[2] * __TIME__[3]) ^ 2) * -1,
